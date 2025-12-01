@@ -1,54 +1,55 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const toggles = document.querySelectorAll(".changelog-toggle");
+// js_changelog.js
 
-  toggles.forEach((btn) => {
-    const panelId = btn.getAttribute("aria-controls");
-    const panel = document.getElementById(panelId);
-
-    // Initialize collapsed state
-    btn.setAttribute("aria-expanded", "false");
-    panel.classList.remove("open");
-    panel.style.maxHeight = "0px";
-
-    // Click and keyboard activation
-    btn.addEventListener("click", () => togglePanel(btn, panel));
-    btn.addEventListener("keydown", (e) => {
-      // Enter or Space toggles; preserve native button behavior
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        togglePanel(btn, panel);
-      }
-    });
-  });
-
-  function togglePanel(btn, panel) {
-    const isOpen = btn.getAttribute("aria-expanded") === "true";
-
-    if (isOpen) {
-      // Collapse
-      btn.setAttribute("aria-expanded", "false");
-      panel.style.maxHeight = panel.scrollHeight + "px"; // set current to enable transition
-      // next frame: animate to 0
-      requestAnimationFrame(() => {
-        panel.classList.remove("open");
-        panel.style.maxHeight = "0px";
-      });
-    } else {
-      // Expand
-      btn.setAttribute("aria-expanded", "true");
-      panel.classList.add("open");
-      // Set to content height for smooth transition
-      panel.style.maxHeight = panel.scrollHeight + "px";
-      // After transition, remove inline height to allow responsive changes
-      panel.addEventListener(
-        "transitionend",
-        function onEnd(ev) {
-          if (ev.propertyName === "max-height" && btn.getAttribute("aria-expanded") === "true") {
-            panel.style.maxHeight = "none";
-          }
-          panel.removeEventListener("transitionend", onEnd);
-        }
-      );
-    }
+// Load changelog data from external JSON file
+async function loadChangelog() {
+  try {
+    const response = await fetch("assets/data/changelog.json"); // adjust path if needed
+    const data = await response.json();
+    renderChangelog(data.changelog);
+    animateChangelog();
+  } catch (error) {
+    console.error("Error loading changelog:", error);
   }
-});
+}
+
+// Render changelog items into the timeline
+function renderChangelog(items) {
+  const timeline = document.querySelector(".timeline");
+  timeline.innerHTML = "";
+
+  items.forEach((item, index) => {
+    const article = document.createElement("article");
+    article.classList.add("timeline-item", index % 2 === 0 ? "left" : "right");
+
+    article.innerHTML = `
+      <div class="content">
+        <time datetime="${item.date}">
+          ${new Date(item.date).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          })}
+        </time>
+        <h2>${item.title}</h2>
+        <p>${item.description}</p>
+      </div>
+    `;
+
+    timeline.appendChild(article);
+  });
+}
+
+// Simple fade-in animation for each item
+function animateChangelog() {
+  const items = document.querySelectorAll(".timeline-item");
+  items.forEach((item, i) => {
+    item.style.opacity = 0;
+    setTimeout(() => {
+      item.style.transition = "opacity 0.6s ease-in-out";
+      item.style.opacity = 1;
+    }, i * 200);
+  });
+}
+
+// Initialize on page load
+document.addEventListener("DOMContentLoaded", loadChangelog);
