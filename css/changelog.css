@@ -1,0 +1,53 @@
+:root {
+  --changelog-bg: #f9f9f9;
+  --changelog-text: #333;
+  --changelog-accent: #007acc;
+  --changelog-border: #ddd;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--changelog-bg);
+  color: var(--changelog-text);
+}
+
+.changelog {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid var(--changelog-border);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.changelog h2 {
+  color: var(--changelog-accent);
+  margin-bottom: 1rem;
+}
+
+.changelog-entry {
+  margin-bottom: 1.5rem;
+}
+
+.changelog-entry h3 {
+  margin: 0.5rem 0;
+  color: var(--changelog-accent);
+}
+
+.changelog-entry ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.changelog-entry li::before {
+  content: "• ";
+  color: var(--changelog-accent);
+}
+
+@media (max-width: 600px) {
+  .changelog {
+    padding: 0.5rem;
+  }
+}
