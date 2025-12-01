@@ -1,53 +1,123 @@
-:root {
-  --changelog-bg: #f9f9f9;
-  --changelog-text: #333;
-  --changelog-accent: #007acc;
-  --changelog-border: #ddd;
-}
-
 body {
-  font-family: system-ui, sans-serif;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
   margin: 0;
-  padding: 0;
-  background: var(--changelog-bg);
-  color: var(--changelog-text);
+  padding: 2rem;
 }
 
 .changelog {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem;
-  border: 1px solid var(--changelog-border);
-  border-radius: 8px;
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+
+.changelog h1 {
+  margin-bottom: 0.5rem;
+}
+
+.changelog p {
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+/* Timeline container */
+.timeline {
+  position: relative;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Central line */
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  background: #007acc;
+  transform: translateX(-50%);
+}
+
+/* Timeline items */
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+}
+
+.timeline-item .content {
   background: #fff;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.changelog h2 {
-  color: var(--changelog-accent);
-  margin-bottom: 1rem;
+.timeline-item time {
+  font-weight: bold;
+  color: #007acc;
+  display: block;
+  margin-bottom: 0.3rem;
 }
 
-.changelog-entry {
-  margin-bottom: 1.5rem;
+.timeline-item h2 {
+  margin: 0.2rem 0;
+  font-size: 1.1rem;
 }
 
-.changelog-entry h3 {
-  margin: 0.5rem 0;
-  color: var(--changelog-accent);
+.timeline-item p {
+  margin: 0;
+  color: #333;
 }
 
-.changelog-entry ul {
-  list-style: none;
-  padding-left: 1rem;
+/* Positioning left and right */
+.timeline-item.left {
+  left: 0;
+  text-align: right;
 }
 
-.changelog-entry li::before {
-  content: "• ";
-  color: var(--changelog-accent);
+.timeline-item.right {
+  left: 50%;
+  text-align: left;
 }
 
-@media (max-width: 600px) {
-  .changelog {
-    padding: 0.5rem;
+/* Marker dots */
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  width: 16px;
+  height: 16px;
+  background: #007acc;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.timeline-item.left::before {
+  right: -8px;
+}
+
+.timeline-item.right::before {
+  left: -8px;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 8px;
+  }
+  .timeline-item {
+    width: 100%;
+    padding-left: 2.5rem;
+    text-align: left;
+  }
+  .timeline-item.left,
+  .timeline-item.right {
+    left: 0;
+  }
+  .timeline-item::before {
+    left: 0;
   }
 }
