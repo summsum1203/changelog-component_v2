@@ -3,7 +3,7 @@
 // Load changelog data from external JSON file
 async function loadChangelog() {
   try {
-    const response = await fetch("assets/data/changelog.json"); // adjust path if needed
+    const response = await fetch("Personal_Front end Projects/changelog_component/assets/data/changelog.json"); // adjust path if needed
     const data = await response.json();
     renderChangelog(data.changelog);
     animateChangelog();
@@ -53,3 +53,4 @@ function animateChangelog() {
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", loadChangelog);
+
